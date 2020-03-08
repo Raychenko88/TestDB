@@ -1,37 +1,39 @@
 package org.example.dao;
 
-import com.mainacad.model.User;
+
+
+import org.example.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
 
     public static User create(User user) {
 
-        String sql = "INSERT INTO users(login, password, first_name, last_name) " +
-                "VALUES(?,?,?,?)";
-        String sequenceSQL = "SELECT currval(pg_get_serial_sequence('users','id'))";
+        String sql = "INSERT INTO users(login, password, first_name, last_name) VALUES(?,?,?,?)";
+        String sequenceSQL = "SELECT currval(pg_get_serial_sequence('users','id'))"; // возвращает значение последние id таблицы users
 
         try (Connection connection = ConnectionToDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             PreparedStatement sequenceStatement = connection.prepareStatement(sequenceSQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql); // подготовленный запрос перед отправкой (JDBC)
+             PreparedStatement sequenceStatement = connection.prepareStatement(sequenceSQL)) {  // подготовленный запрос перед отправкой (JDBC)
 
-            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(1, user.getLogin());  // замена ? на значения
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getFirstName());
             preparedStatement.setString(4, user.getLastName());
 
-            preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();   // выполнить запрос на сохранение. executeUpdate - выполнить запрос без возврата данных
 
-            ResultSet resultSet = sequenceStatement.executeQuery();
+            ResultSet resultSet = sequenceStatement.executeQuery();  // выполнить запрос c возвратом значений (id)
 
             while (resultSet.next()) {
-                Integer id = resultSet.getInt(1);
-                user.setId(id);
+                Integer id = resultSet.getInt(1); // это колнка id
+                user.setId(id); // устанавливаем пользователю сохраненный id (32)
                 return user;
             }
         } catch (SQLException e) {
@@ -109,8 +111,25 @@ public class UserDAO {
 
     public static List<User> findAll() {
         String sql = "SELECT * FROM users";
+        List <User> users = new ArrayList<>();
+        try (Connection connection = ConnectionToDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery();
+        ) {
 
-        return null;
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setLogin(resultSet.getString("login"));
+                user.setPassword(resultSet.getString("password"));
+                user.setFirstName(resultSet.getString("first_name"));
+                user.setLastName(resultSet.getString("last_name"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public static void delete(Integer id) {

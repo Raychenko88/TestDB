@@ -1,6 +1,8 @@
 package org.example.dao;
 
-import com.mainacad.model.Order;
+
+
+import org.example.model.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.util.logging.Logger;
 public class OrderDAO {
 
     private static Logger logger = Logger.getLogger(OrderDAO.class.getName());
+
     public static Order create(Order order){
         String sql = "INSERT INTO orders(item_id, amount, cart_id) VALUES(?,?,?)";
         String sequenceSql = "SELECT currval(pg_get_serial_sequence('orders','id'))";
@@ -43,7 +46,21 @@ public class OrderDAO {
     }
 
     public static Order update(Order order){
+        String sql = "UPDATE orders SET item_id=?, cart_Id=?, amount=? WHERE id=?";
+        try (Connection connection = ConnectionToDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
 
+            preparedStatement.setInt(1, order.getItemId());
+            preparedStatement.setInt(2, order.getCartId());
+            preparedStatement.setInt(3, order.getAmount());
+            preparedStatement.setInt(4, order.getId());
+
+            preparedStatement.executeUpdate();
+            return order;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

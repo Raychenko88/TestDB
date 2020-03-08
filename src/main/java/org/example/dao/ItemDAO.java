@@ -1,9 +1,12 @@
 package org.example.dao;
-import com.mainacad.model.Item;
+
+
+import org.example.model.Item;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ItemDAO {
     public static Item create(Item item) {

@@ -1,7 +1,8 @@
 package org.example.dao;
 
-import com.mainacad.model.Cart;
-import com.mainacad.model.User;
+
+import org.example.model.Cart;
+import org.example.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
