@@ -13,10 +13,11 @@ public class Order {
 
     private Integer id;
     private Integer itemId;
-    private Integer amount;
     private Integer cartId;
+    private Integer amount;
 
-    public Order(Integer itemId, Integer amount, Integer cartId) {
+
+    public Order(Integer itemId, Integer cartId, Integer amount) {
         this.itemId = itemId;
         this.amount = amount;
         this.cartId = cartId;

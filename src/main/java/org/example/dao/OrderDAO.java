@@ -17,7 +17,7 @@ public class OrderDAO {
     private static Logger logger = Logger.getLogger(OrderDAO.class.getName());
 
     public static Order create(Order order){
-        String sql = "INSERT INTO orders(item_id, amount, cart_id) VALUES(?,?,?)";
+        String sql = "INSERT INTO orders(item_id, cart_id, amount) VALUES(?,?,?)";
         String sequenceSql = "SELECT currval(pg_get_serial_sequence('orders','id'))";
 
         try (Connection connection = ConnectionToDB.getConnection();
@@ -26,8 +26,8 @@ public class OrderDAO {
              ){
 
             preparedStatement.setInt(1, order.getItemId());
-            preparedStatement.setInt(2, order.getAmount());
-            preparedStatement.setInt(3, order.getCartId());
+            preparedStatement.setInt(3, order.getAmount());
+            preparedStatement.setInt(2, order.getCartId());
 
             preparedStatement.executeUpdate();
 

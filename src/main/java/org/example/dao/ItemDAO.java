@@ -9,9 +9,9 @@ import java.util.List;
 
 
 public class ItemDAO {
+
     public static Item create(Item item) {
-        String statement = "INSERT INTO items(item_code, name, price)" +
-                "VALUES(?,?,?)";
+        String statement = "INSERT INTO items(item_code, name, price, availability) VALUES(?,?,?,?)";
 
         String curIdStatement = "SELECT currval(pg_get_serial_sequence('items','id'))";
 
@@ -22,6 +22,7 @@ public class ItemDAO {
             preparedStatement.setString(1, item.getItemCode());
             preparedStatement.setString(2, item.getName());
             preparedStatement.setInt(3, item.getPrice());
+            preparedStatement.setInt(4, item.getAvailability());
 
             preparedStatement.executeUpdate();
 
@@ -41,7 +42,7 @@ public class ItemDAO {
     }
 
     public static Item update(Item item) {
-        String statement = "UPDATE items SET item_code=?, name=?, price=? WHERE id=?";
+        String statement = "UPDATE items SET item_code=?, name=?, price=?, availability = ?  WHERE id=?";
 
         try (Connection connection = ConnectionToDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
@@ -49,7 +50,8 @@ public class ItemDAO {
             preparedStatement.setString(1, item.getItemCode());
             preparedStatement.setString(2, item.getName());
             preparedStatement.setInt(3, item.getPrice());
-            preparedStatement.setInt(4, item.getId());
+            preparedStatement.setInt(4, item.getAvailability());
+            preparedStatement.setInt(5, item.getId());
 
             preparedStatement.executeUpdate();
 
@@ -172,6 +174,7 @@ public class ItemDAO {
         item.setItemCode(resultSet.getString("item_code"));
         item.setName(resultSet.getString("name"));
         item.setPrice(resultSet.getInt("price"));
+        item.setPrice(resultSet.getInt("availability"));
 
         return item;
     }

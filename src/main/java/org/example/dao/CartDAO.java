@@ -26,7 +26,7 @@ public class CartDAO {
         ){
 
             preparedStatement.setLong(1, cart.getCreationTime());
-            preparedStatement.setBoolean(2, cart.getClosed());
+            preparedStatement.setInt(2, cart.getClosed());
             preparedStatement.setInt(3, cart.getUserId());
 
             preparedStatement.executeUpdate();
@@ -46,7 +46,21 @@ public class CartDAO {
     }
 
     public static Cart update(Cart cart){
+        String sql = "UPDATE carts SET closed=?, user_id=?, creation_time=? WHERE id=?";
+        try (Connection connection = ConnectionToDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
 
+            preparedStatement.setInt(1, cart.getClosed());
+            preparedStatement.setInt(2, cart.getUserId());
+            preparedStatement.setLong(3, cart.getCreationTime());
+            preparedStatement.setInt(4, cart.getId());
+
+            preparedStatement.executeUpdate();
+            return cart;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -65,7 +79,7 @@ public class CartDAO {
 
                 cart.setId(resultSet.getInt("id"));
                 cart.setCreationTime(resultSet.getLong("creation_time"));
-                cart.setClosed(resultSet.getBoolean("closed"));
+                cart.setClosed(resultSet.getInt("closed"));
                 cart.setUserId(resultSet.getInt("user_id"));
 
                 return cart;
@@ -97,7 +111,7 @@ public class CartDAO {
 
                 cart.setId(resultSet.getInt("id"));
                 cart.setCreationTime(resultSet.getLong("creation_time"));
-                cart.setClosed(resultSet.getBoolean("closed"));
+                cart.setClosed(resultSet.getInt("closed"));
                 cart.setUserId(resultSet.getInt("user_id"));
 
                 return cart;

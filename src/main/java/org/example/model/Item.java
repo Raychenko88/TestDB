@@ -15,10 +15,12 @@ public class Item {
     private String itemCode;
     private String name;
     private Integer price;
+    private Integer availability;
 
-    public Item(String itemCode, String name, Integer price) {
+    public Item(String itemCode, String name, Integer price, Integer availability) {
         this.itemCode = itemCode;
         this.name = name;
         this.price = price;
+        this.availability = availability;
     }
 }
