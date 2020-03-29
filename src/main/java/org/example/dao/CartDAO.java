@@ -25,7 +25,6 @@ public class CartDAO {
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              PreparedStatement seqStatement = connection.prepareStatement(sequenceSql)
         ){
-
             preparedStatement.setLong(1, cart.getCreationTime());
             preparedStatement.setInt(2, cart.getClosed());
             preparedStatement.setInt(3, cart.getUserId());
