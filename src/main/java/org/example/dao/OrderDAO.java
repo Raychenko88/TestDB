@@ -139,7 +139,7 @@ public class OrderDAO {
     }
 
 
-    public static BigDecimal SumAnyUserById(Integer id){
+    public static BigDecimal sumAnyUserById(Integer id){
         String sql = "SELECT SUM (i.price * o.amount) AS my_resoult FROM carts c" +
                 "JOIN orders o ON c.id = o.cart_id" +
                 "JOIN users u ON u.id = c.user_id" +

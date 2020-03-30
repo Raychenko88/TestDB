@@ -9,8 +9,9 @@ class CartDAOTest {
 
     @Test
     void create() {
-        Cart cart = new Cart((long) 23232323,1,6);
-        cart.setId(1);
+        Cart cart = new Cart((long) 32323232,1,8);
+        cart.setId(2);
+        assertEquals(2, cart.getId());
     }
 
     @Test

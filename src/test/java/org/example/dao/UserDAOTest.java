@@ -12,36 +12,34 @@ class UserDAOTest {
 
     @Test
     void create() {
-        User user = new User("Boroda","123","Ivan","Sidorov");
+        User user = new User("Qwerty","123","Ivan","Sidorov");
         UserDAO.create(user);
         assertNotNull(user.getId());
     }
 
     @Test
     void update() {
-        User user = new User("BorodaDB","1234","Ivanidze","Sidorovidze");
-        user.setId(6);
+        User user = new User("Asdfghj","321","Leha","Boroda");
+        user.setId(8);
         UserDAO.update(user);
-        assertEquals(user.getLogin(), "BorodaDB");
+        assertEquals(user.getLogin(), "Asdfghj");
 
     }
 
     @Test
     void findById() {
-        UserDAO.findById(6);
-        assertEquals("BorodaDB", "BorodaDB");
+        assertEquals("321", UserDAO.findById(8).getPassword());
     }
 
     @Test
     void findByLogin() {
-        UserDAO.findByLogin("BorodaDB");
-        assertEquals("1234", "1234");
+        assertEquals("Asdfghj", UserDAO.findByLogin("Asdfghj").getLogin());
     }
 
     @Test
     void findAll() {
         List<User> users = UserDAO.findAll();
 
-       assertEquals(3,users.size());
+       assertEquals(4,users.size());
     }
 }

@@ -11,7 +11,7 @@ class ItemDAOTest {
 
     @Test
     void create() {
-        Item item = new Item("lalalalala", "newBoroda", 23, 32);
+        Item item = new Item("Aa321FqZ", "SomeThing", 500, 25);
         ItemDAO.create(item);
         assertNotNull(item);
 
@@ -19,34 +19,32 @@ class ItemDAOTest {
 
     @Test
     void update() {
-        Item item = new Item("newcode", "newchto to", 223, 332);
-        item.setId(2);
+        Item item = new Item("AS456789RES", "Guitar", 18000, 3);
+        item.setId(4);
         ItemDAO.update(item);
-        assertEquals(item.getItemCode(), "newcode");
+        assertEquals("AS456789RES", item.getItemCode());
 
     }
 
     @Test
     void findById() {
-        ItemDAO.findById(2);
-        assertEquals("newcode", "newcode");
+        assertEquals(4, ItemDAO.findById(4).getId());
     }
 
     @Test
     void findByItemCode() {
-        ItemDAO.findByItemCode("newcode");
-        assertEquals("newcode", "newcode");
+        List<Item> items = ItemDAO.findByItemCode("AS456789RES");
+        assertEquals("AS456789RES", items.get(0).getItemCode());
     }
 
     @Test
     void findByItemPriceBetween() {
-        ItemDAO.findByItemPriceBetween(23,223);
-        assertEquals(223,223);
+        assertEquals(3, ItemDAO.findByItemPriceBetween(23, 18000).size());
     }
 
     @Test
     void findAll() {
         List <Item> items = ItemDAO.findAll();
-        assertEquals(2, items.size());
+        assertEquals(3, items.size());
     }
 }

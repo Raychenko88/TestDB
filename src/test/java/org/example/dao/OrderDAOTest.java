@@ -11,9 +11,9 @@ class OrderDAOTest {
 
     @Test
     void create() {
-        Order order = new Order(2,1,2);
+        Order order = new Order(4,2,2);
         OrderDAO.create(order);
-        assertEquals(order.getCartId(), 1);
+        assertEquals(2,order.getCartId());
     }
 
     @Test
@@ -60,6 +60,6 @@ class OrderDAOTest {
 
     @Test
     void sumAnyUserById() {
-        assertEquals(10247, OrderDAO.SumAnyUserById(6));
+        assertEquals(10247, OrderDAO.sumAnyUserById(6));
     }
 }

@@ -33,7 +33,7 @@ public class CartDAO {
 
             ResultSet resultSet = seqStatement.executeQuery();
             while (resultSet.next()) {
-                Integer id = resultSet.getInt(1);
+                Integer id = resultSet.getInt(2);
                 cart.setId(id);
 
                 return cart;
