@@ -33,9 +33,8 @@ public class CartDAO {
 
             ResultSet resultSet = seqStatement.executeQuery();
             while (resultSet.next()) {
-                Integer id = resultSet.getInt(2);
+                Integer id = resultSet.getInt(1);
                 cart.setId(id);
-
                 return cart;
             }
         } catch (SQLException e){
@@ -106,20 +105,19 @@ public class CartDAO {
                 cart.setClosed(resultSet.getInt("closed"));
                 cart.setUserId(resultSet.getInt("user_id"));
                 carts.add(cart);
-                return carts;
             }
 
         }catch (Exception e){
             e.printStackTrace();
         }
-            return null;
+        return carts;
     }
 
     public static Cart findOpenCartByUser(Integer userId){
         String statement = "SELECT * FROM carts WHERE closed=0 AND user_id=?";
 
         try (Connection connection = ConnectionToDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
 
             preparedStatement.setInt(1, userId);
 
@@ -140,5 +138,19 @@ public class CartDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void delete(Cart cart) {
+        String statement = "DELETE FROM carts WHERE id=?";
+
+        try (Connection connection = ConnectionToDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+
+            preparedStatement.setInt(1, cart.getId());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

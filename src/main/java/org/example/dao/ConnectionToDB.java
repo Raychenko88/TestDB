@@ -10,7 +10,7 @@ class ConnectionToDB {
     private static Logger logger = Logger.getLogger(ConnectionToDB.class.getName());
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/twelfth_task";
     private static final String DB_USER = "postgres";
-    private static final String DB_PASS = "123456";
+    private static final String DB_PASS = "248842";
 
     protected static Connection getConnection(){
         Connection connection = null;

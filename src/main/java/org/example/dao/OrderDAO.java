@@ -139,8 +139,8 @@ public class OrderDAO {
     }
 
 
-    public static BigDecimal sumAnyUserById(Integer id){
-        String sql = "SELECT SUM (i.price * o.amount) AS my_resoult FROM carts c" +
+    public static Integer sumAnyUserById(Integer id){
+        String sql = "SELECT SUM (i.price * o.amount) AS my_result FROM carts c" +
                 "JOIN orders o ON c.id = o.cart_id" +
                 "JOIN users u ON u.id = c.user_id" +
                 "JOIN items i ON i.id = o.item_id" +
@@ -153,8 +153,7 @@ public class OrderDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Integer result = resultSet.getInt("my_resoult");
-                return  new BigDecimal(result);
+                return resultSet.getInt("my_result");
             }
 
         } catch (SQLException e) {

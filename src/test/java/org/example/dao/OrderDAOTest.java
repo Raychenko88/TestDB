@@ -1,13 +1,15 @@
 package org.example.dao;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.example.model.Order;
-import org.example.model.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderDAOTest {
+
+    //TODO create two users and two carts for every user, save all objects to DB
+    //TODO delete all test users and carts after all tests
+    //TODO delete temp data(orders) after each test
 
     @Test
     void create() {
@@ -29,22 +31,8 @@ class OrderDAOTest {
 
     @Test
     void findByCart() {
+        //TODO use both carts and users
         assertEquals(2,OrderDAO.findByCart(1).size());
-    }
-
-    @Test
-    void testCreate() {
-        Order order = new Order(3,1,48);
-        OrderDAO.create(order);
-        assertEquals(9, order.getId());
-    }
-
-    @Test
-    void testUpdate() {
-        Order order = new Order(2,1,35);
-        order.setId(8);
-        OrderDAO.update(order);
-        assertEquals(35, order.getAmount());
     }
 
     @Test
@@ -53,13 +41,8 @@ class OrderDAOTest {
     }
 
     @Test
-    void testFindByCart() {
-        assertEquals(4,OrderDAO.findByCart(1).size());
-    }
-
-
-    @Test
     void sumAnyUserById() {
+        //TODO use both carts and users
         assertEquals(10247, OrderDAO.sumAnyUserById(6));
     }
 }
