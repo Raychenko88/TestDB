@@ -1,13 +1,12 @@
 package org.example.dao;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.example.model.Order;
-import org.example.model.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderDAOTest {
+
 
     @Test
     void create() {
