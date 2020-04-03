@@ -21,7 +21,7 @@ class CartDAOTest {
 
     @BeforeAll
     public static void setData(){
-        User user = new User("TestLog", "TestPass", "fName", "lName");
+        user = new User("TestLog", "TestPass", "fName", "lName");
         UserDAO.create(user);
     }
 
@@ -52,7 +52,7 @@ class CartDAOTest {
         testCarts.add(cart);
         cart.setClosed(0);
         CartDAO.update(cart);
-        assertEquals(0, CartDAO.findById(cart.getId()));
+        assertEquals(0, CartDAO.findById(cart.getId()).getClosed());
     }
 
     @Test
@@ -71,5 +71,28 @@ class CartDAOTest {
         List<Cart> carts = CartDAO.findByUser(user);
         assertFalse(carts.isEmpty());
 
+    }
+
+    @Test
+    void findOpenCartByUser(){
+        Cart cart1 = new Cart(1L,1, user.getId());
+        Cart cart2 = new Cart(0L,0, user.getId());
+        CartDAO.create(cart1);
+        CartDAO.create(cart2);
+        testCarts.add(cart1);
+        testCarts.add(cart2);
+
+        Cart cart = CartDAO.findOpenCartByUser(user.getId());
+        assertNotNull(cart);
+        assertEquals(0L, cart.getCreationTime());
+    }
+    @Test
+    void delete(){
+        Cart cart = new Cart(currentTime,1,user.getId());
+        CartDAO.create(cart);
+        testCarts.add(cart);
+        assertNotNull(CartDAO.findById(cart.getId()));
+        CartDAO.delete(cart);
+        assertNull(CartDAO.findById(cart.getId()));
     }
 }
