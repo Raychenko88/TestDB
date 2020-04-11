@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.dao.ItemDAO;
 import org.example.dao.UserDAO;
 import org.example.model.User;
 
@@ -8,32 +9,31 @@ import java.util.List;
 public class UserService {
 
     public static User create(User user){
-   if (user.getLogin().equals(UserService.findByLogin(user).getLogin())){
-       return null;
-   }else {
-       UserDAO.create(user);
-       return user;
-   }
+    if (UserDAO.findByLogin(user.getLogin()) != null){
+        UserDAO.create(user);
+        return user;
+    }
+    return null;
     }
 
     public static User update(User user){
-        if (UserService.create(user) == null){
-            return UserDAO.update(user);
-        }else {
-            return null;
+        if (UserDAO.findById(user.getId()) != null){
+            UserDAO.update(user);
+            return user;
         }
+        return null;
     }
 
-    public static void delete(User user){
-        UserDAO.delete(user.getId());
+    public static void delete(Integer id){
+        UserDAO.delete(id);
     }
 
     public static List<User> findAllUsers(){
         return UserDAO.findAll();
     }
 
-    public static User findById(User user){
-        return UserDAO.findById(user.getId());
+    public static User findById(Integer id){
+        return UserDAO.findById(id);
     }
 
     public static User findByLogin(User user){

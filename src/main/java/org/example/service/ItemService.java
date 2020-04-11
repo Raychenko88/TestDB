@@ -9,17 +9,14 @@ public class ItemService {
 
 
     public  static Item create(Item item){
-        for (Item a: ItemService.findByItemCode(item.getItemCode())) {
-            if (a.getName().equals(item.getName())){
-                return null;
-            }else {
-                ItemDAO.create(item);
-            }
+        if (ItemDAO.findByItemCode(item.getItemCode()).isEmpty()){
+            ItemDAO.create(item);
+            return item;
         }
-        return item;
+        return null;
     }
     public static Item update(Item item){
-        if (ItemService.create(item) == null){
+        if (ItemDAO.findById(item.getId()) != null){
             ItemDAO.update(item);
             return item;
         }
@@ -30,8 +27,8 @@ public class ItemService {
     ItemDAO.delete(item);
     }
 
-    public static Item findById(Item item){
-       return ItemDAO.findById(item.getId());
+    public static Item findById(Integer id){
+       return ItemDAO.findById(id);
     }
 
     public static List<Item> findByItemCode(String code){
