@@ -113,7 +113,17 @@ class OrderDAOTest {
 
         OrderDAO.delete(order1.getId());
         OrderDAO.delete(order2.getId());
-        UserDAO.delete(user1.getId());
         CartDAO.delete(cart1);
+        UserDAO.delete(user1.getId());
+    }
+
+    @Test
+    void findOrderByItem(){
+        cart.setClosed(0);
+        Order order = new Order(item.getId(),cart.getId(),2);
+        OrderDAO.create(order);
+        testOrders.add(order);
+        OrderDAO.findOrderByItem(item.getId());
+//        OrderDAO.delete(order.getId());
     }
 }

@@ -1,25 +1,22 @@
 package org.example.service;
 
 
-
-import org.example.dao.CartDAO;
 import org.example.dao.OrderDAO;
 import org.example.model.Order;
-import org.example.model.User;
 
 import java.util.List;
-import java.util.Objects;
 
 public class OrderService {
 
-    public static Order create(Order order, User user){
-
-        if (OrderDAO.findByCart(Objects.requireNonNull(CartDAO.findOpenCartByUser(user.getId())).getId()).isEmpty()){
+    public static Order create(Order order){
+        Order dbOrder = OrderDAO.findOrderByItem(order.getItemId());
+        if (dbOrder == null){
             OrderDAO.create(order);
             return order;
-        }else{
-            order.setAmount(Objects.requireNonNull(OrderDAO.findById(order.getId())).getAmount() + order.getAmount());
-           return OrderDAO.update(order);
+        }else {
+            dbOrder.setAmount(dbOrder.getAmount() + order.getAmount());
+            OrderDAO.update(dbOrder);
+            return dbOrder;
         }
     }
 
@@ -46,4 +43,6 @@ public class OrderService {
     public static Integer sumAnyUserById(Integer id){
         return OrderDAO.sumAnyUserById(id);
     }
+
+
 }

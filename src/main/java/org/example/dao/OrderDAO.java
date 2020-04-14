@@ -2,6 +2,7 @@ package org.example.dao;
 
 
 
+import org.example.model.Cart;
 import org.example.model.Item;
 import org.example.model.Order;
 import org.example.model.User;
@@ -140,10 +141,10 @@ public class OrderDAO {
 
 
     public static Integer sumAnyUserById(Integer id){
-        String sql = "SELECT SUM (i.price * o.amount) AS my_result FROM carts c" +
-                "JOIN orders o ON c.id = o.cart_id" +
-                "JOIN users u ON u.id = c.user_id" +
-                "JOIN items i ON i.id = o.item_id" +
+        String sql = "SELECT SUM (i.price * o.amount) AS my_result FROM carts c " +
+                "JOIN orders o ON c.id = o.cart_id " +
+                "JOIN users u ON u.id = c.user_id " +
+                "JOIN items i ON i.id = o.item_id " +
                 "WHERE u.id = ?";
         try (Connection connection = ConnectionToDB.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -160,6 +161,37 @@ public class OrderDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public static Order findOrderByItem(Integer itemId){
+        String sql =
+                "SELECT o.id, o.item_id, o.cart_id, o.amount " +
+                "FROM orders o " +
+                "JOIN carts c ON o.cart_id = c.id " +
+                "JOIN items i ON o.item_id = i.id " +
+                "WHERE c.closed = '0' " +
+                        "AND i.id = ?";
+        try (Connection connection = ConnectionToDB.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        ){
+
+            preparedStatement.setInt(1, itemId);
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                Integer itemId2 = resultSet.getInt("item_id");
+                Integer cartId = resultSet.getInt("cart_id");
+                Integer amount = resultSet.getInt("amount");
+                Order order = new Order(id,itemId2,cartId,amount);
+                return order;
+            }
+        } catch (SQLException e){
+            logger.severe(e.getMessage());
+        }
+
         return null;
     }
 }
