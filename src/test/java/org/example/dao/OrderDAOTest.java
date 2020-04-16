@@ -31,7 +31,7 @@ class OrderDAOTest {
     public static void setData(){
         user = new User("TestLog", "TestPass", "fName", "lName");
         UserDAO.create(user);
-        cart = new Cart(new Date().getTime(), 1, user.getId());
+        cart = new Cart(new Date().getTime(), 0, user.getId());
         CartDAO.create(cart);
         item = new Item("EEtestIcode","Tname", 2000, 2);
         ItemDAO.create(item);
@@ -119,11 +119,10 @@ class OrderDAOTest {
 
     @Test
     void findOrderByItem(){
-        cart.setClosed(0);
         Order order = new Order(item.getId(),cart.getId(),2);
         OrderDAO.create(order);
         testOrders.add(order);
-        OrderDAO.findOrderByItem(item.getId());
-//        OrderDAO.delete(order.getId());
+        assertEquals(order.getId(), OrderDAO.findOrderByItem(item.getId()).getId());
+        OrderDAO.delete(order.getId());
     }
 }
